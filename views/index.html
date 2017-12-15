@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试</title>
+</head>
+<body>
+上传文件：<form method="post" action="/record_import" enctype="multipart/form-data">
+                <input type="file" name="excl">
+                <input type="submit" value="上传">
+          </form>
+用户名：<input type="text" id="userName"><br>
+密&nbsp;&nbsp;&nbsp;码：<input type="password" id="pass"><br>
+<input type="button" value="登录" id="login"onclick="login()">
+<input type="button" value="修改密码" onclick="updatePassword()">
+<input type="button" value="退出" id="loginout">
+<script type="text/javascript" src="/assets/js/jquery.js"></script>
+<script>
+    //登录
+    function login() {
+        var data={};
+        data.username  =document.getElementById("userName").value;
+        data.password  =document.getElementById("pass").value;
+        data = JSON.stringify(data);
+        $.ajax({
+            url:"/userLogin",
+            type:"post",
+            dataType:"json",
+            headers:{'Content-Type':'application/json'},
+            data:data,
+            timeOut:10000,
+            success:function(data) {
+                console.log(data);
+                if(data.code == 0){
+                    alert(data.msg);
+                    history.go(0);
+
+                }else {
+                    alert(data.msg);
+                }
+            },
+            error:function(XMLHttpRequest,textStatus,errorThrown){
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
+    }
+
+    //退出登录
+    $("#loginout").click(function () {
+        //window.location="/userLoginout";
+        window.location="/get_resour";
+    })
+
+    //修改密码
+    function updatePassword() {
+        var data={};
+        data.id=1;
+        data.oldPass="123";
+        data.newPass="123456";
+        data = JSON.stringify(data);
+        $.ajax({
+            url:"/updatePassword",
+            type:"post",
+            dataType:"json",
+            headers:{'Content-Type':'application/json'},
+            data:data,
+            timeOut:10000,
+            success:function(data) {
+                console.log(data);
+                if(data.code == 0){
+                    alert(data.msg);
+                }else {
+                    alert(data.msg);
+                }
+            },
+            error:function(XMLHttpRequest,textStatus,errorThrown){
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
+    }
+</script>
+</body>
+</html>
